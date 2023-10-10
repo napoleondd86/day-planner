@@ -2,12 +2,37 @@
 // the code isn't run until the browser has finished rendering all the elements
 // in the html.
 $(function () {
+
   let today = dayjs();
   let currentHour = today.format('H');
   console.log(currentHour);
-  $('#currentDay').text(today.format('dddd, MMMM D'));
+  $('#currentDay').text(today.format('dddd, MMMM D hh:mm:ss'));
 
+  
+  let timeBlocks = $('.time-block');    //selects all time-blocks
+  console.log(timeBlocks);
+  
+  
+  
+  function updateContainer() {
+    $('.time-block').each(function() {
+      var blockId = parseInt($(this).attr('id')); //convert the id value from a str value to a number with parse
+      // console.log(blockId)
+      if (currentHour < blockId) {
+        $(this).removeClass('past present');   //IS THIS NECCESSARY?
+        $(this).addClass('future');
+      } else if (currentHour === blockId) {
+        $(this).removeClass('future past');
+        $(this).addClass('present');
+      } else {
+        $(this).removeClass('present future');
+        $(this).addClass('past');
+      }
+    }) 
+   
+  }
 
+  updateContainer();
 
 
   // TODO: Add a listener for click events on the save button. This code should
