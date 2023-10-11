@@ -17,7 +17,7 @@ $(function () {
     //sets interval in variable
     var timerInterval = setInterval(function() {
       // console.log(currentHour)
-      $('#currentDay').text(today.format('dddd, MMMM D hh:mm:ss'));
+      $('#currentDay').text(today.format('dddd, MMMM D hh:mm'));
       updateContainer();
 
     }, 1000);
