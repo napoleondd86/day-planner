@@ -3,35 +3,46 @@
 // in the html.
 $(function () {
 
-  let today = dayjs();
-  let currentHour = today.format('H');
-  console.log(currentHour);
-  $('#currentDay').text(today.format('dddd, MMMM D hh:mm:ss'));
+  let saves = [];     //the list of saved items
 
-  
   let timeBlocks = $('.time-block');    //selects all time-blocks
   console.log(timeBlocks);
-  
-  
+
+  let today = dayjs();
+  let currentHour = parseInt(today.format('H'));
+
+
+  // handle displaying the time
+  function displayTime() {
+    //sets interval in variable
+    var timerInterval = setInterval(function() {
+      // console.log(currentHour)
+      $('#currentDay').text(today.format('dddd, MMMM D hh:mm:ss'));
+      updateContainer();
+
+    }, 1000);
+  }
+  displayTime();
   
   function updateContainer() {
-    $('.time-block').each(function() {
-      var blockId = parseInt($(this).attr('id')); //convert the id value from a str value to a number with parse
-      // console.log(blockId)
-      if (currentHour < blockId) {
-        $(this).removeClass('past present');   //IS THIS NECCESSARY?
-        $(this).addClass('future');
-      } else if (currentHour === blockId) {
-        $(this).removeClass('future past');
-        $(this).addClass('present');
-      } else {
-        $(this).removeClass('present future');
-        $(this).addClass('past');
-      }
-    }) 
-   
+  $('.time-block').each(function() {
+    var blockId = parseInt($(this).attr('id')); //convert the id value from a str value to a number with parse
+    // console.log(blockId)
+    if (currentHour < blockId) {
+      $(this).removeClass('past present');   //IS THIS NECCESSARY?
+      $(this).addClass('future');
+    } else if (currentHour === blockId) {
+      $(this).removeClass('future past');
+      $(this).addClass('present');
+    } else {
+      $(this).removeClass('present future');
+      $(this).addClass('past');
+    }
+  })    
   }
 
+
+  
   updateContainer();
 
 
@@ -53,4 +64,22 @@ $(function () {
   // attribute of each time-block be used to do this?
   //
   // TODO: Add code to display the current date in the header of the page.DONE
+
+  // let saveButtonEl = $('.savebtn');
+  $('.saveBtn').on("click", function(){
+    // console.log(event)
+    var description = $(this).siblings('.description').val();
+    var id = $(this).parent().attr('id');
+    localStorage.setItem(id, description)
+  });
+
+  $('.time-block').each(function(i){
+    var id = $(this).attr('id');
+    var description = $(this).children('textarea');
+    if (localStorage.getItem(id)) {
+      description.val(localStorage.getItem(id));
+    }
+  })
+  
+
 });
